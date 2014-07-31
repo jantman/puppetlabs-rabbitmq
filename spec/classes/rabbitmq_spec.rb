@@ -83,6 +83,7 @@ describe 'rabbitmq' do
               'require' => 'Class[Rabbitmq::Install]',
               'notify'  => 'Class[Rabbitmq::Service]'
             )
+            should contain_staging__file('rabbitmqadmin').with_source("http://localhost:15672/cli/rabbitmqadmin")
           end
         end
         context 'with service_manage set to false' do
