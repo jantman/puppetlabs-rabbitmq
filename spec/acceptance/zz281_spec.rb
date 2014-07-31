@@ -153,6 +153,43 @@ describe 'rabbitmq class with 2.8.1:' do
       }
       EOS
 
+      shell('rm -f /var/lib/rabbitmq/rabbitmqadmin')
+      apply_manifest(pp, :catch_failures => true)
+    end
+
+    # since serverspec (used by beaker-rspec) can only tell present/absent for packages
+    describe file('/var/lib/rabbitmq/rabbitmqadmin') do
+      it { should be_file }
+    end
+
+    describe command('rabbitmqadmin --help') do
+      it { should return_exit_status 0 }
+    end
+
+  end
+
+  context 'rabbitmqadmin with specified default credentials' do
+
+    it 'should run successfully' do
+      pp = <<-EOS
+      class { 'rabbitmq':
+        admin_enable     => true,
+        service_manage   => true,
+        version          => '2.8.1-1',
+        package_source   => '#{package_source}',
+        package_ensure   => '#{package_ensure}',
+        package_provider => 'rpm',
+        management_port  => '55672',
+        default_user     => 'foobar',
+        default_pass     => 'bazblam',
+      }
+      if $::osfamily == 'RedHat' {
+        class { 'erlang': epel_enable => true}
+        Class['erlang'] -> Class['rabbitmq']
+      }
+      EOS
+
+      shell('rm -f /var/lib/rabbitmq/rabbitmqadmin')
       apply_manifest(pp, :catch_failures => true)
     end
 
