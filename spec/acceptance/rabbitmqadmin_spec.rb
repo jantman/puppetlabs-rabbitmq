@@ -46,6 +46,19 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
 
   context 'works with specified default credentials' do
     it 'should run successfully' do
+      # make sure credential change takes effect before admin_enable
+      pp_pre = <<-EOS
+      class { 'rabbitmq':
+        service_manage => true,
+        default_user   => 'foobar',
+        default_pass   => 'bazblam',
+      }
+      if $::osfamily == 'RedHat' {
+        class { 'erlang': epel_enable => true}
+        Class['erlang'] -> Class['rabbitmq']
+      }
+      EOS
+
       pp = <<-EOS
       class { 'rabbitmq':
         admin_enable   => true,
@@ -60,6 +73,7 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
       EOS
 
       shell('rm -f /var/lib/rabbitmq/rabbitmqadmin')
+      apply_manifest(pp_pre, :catch_failures => true)
       apply_manifest(pp, :catch_failures => true)
     end
 
