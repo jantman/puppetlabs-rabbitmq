@@ -3,6 +3,9 @@ require 'spec_helper_acceptance'
 # beacuse of some serious issues with upgrading and downgrading rabbitmq on RedHat,
 # we need to run all of the 2.8.1 tests last.
 #
+# NOTE that this is only tested on RedHat and probably only works there. But I can't seem
+# to get 'confine' to work...
+#
 
 describe 'rabbitmq class with 2.8.1:' do
   case fact('osfamily')
