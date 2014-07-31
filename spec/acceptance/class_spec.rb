@@ -91,7 +91,6 @@ describe 'rabbitmq class:' do
       }
       EOS
 
-      
       apply_manifest(pp_pre, :catch_failures => true)
       apply_manifest(pp, :catch_failures => true)
     end
@@ -110,6 +109,7 @@ describe 'rabbitmq class:' do
         package_source   => '#{package_source_281}',
         package_ensure   => '#{package_ensure_281}',
         package_provider => 'rpm',
+        management_port  => '55672',
       }
       if $::osfamily == 'RedHat' {
         class { 'erlang': epel_enable => true}
@@ -118,6 +118,7 @@ describe 'rabbitmq class:' do
       EOS
 
       # Apply twice to ensure no errors the second time.
+      shell('service rabbitmq-server stop')
       shell('yum -y erase rabbitmq-server')
       shell('rm -Rf /var/lib/rabbitmq/mnesia /etc/rabbitmq')
       apply_manifest(pp, :catch_failures => true)
