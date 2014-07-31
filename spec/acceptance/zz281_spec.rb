@@ -54,6 +54,8 @@ describe 'rabbitmq class with 2.8.1:' do
       # Apply twice to ensure no errors the second time.
       apply_manifest(pp, :catch_failures => true)
       expect(apply_manifest(pp, :catch_changes => true).exit_code).to be_zero
+      # DEBUG
+      shell('netstat -lntp')
     end
 
     describe command('rabbitmqctl status') do
@@ -79,7 +81,8 @@ describe 'rabbitmq class with 2.8.1:' do
         package_ensure   => '#{package_ensure}',
         package_provider => 'rpm',
         management_port  => '55672',
-        service_ensure => 'stopped',
+        service_ensure   => 'stopped',
+        admin_enable     => false,
       }
       if $::osfamily == 'RedHat' {
         class { 'erlang': epel_enable => true}
