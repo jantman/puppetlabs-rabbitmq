@@ -58,8 +58,9 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
         service_manage   => true,
         version          => '2.8.1-1',
         package_source   => '#{package_source}',
-        package_ensure   => '2.8.1-1.noarch',
+        package_ensure   => '2.8.1-1',
         package_provider => 'rpm',
+        management_port  => '55672',
       }
       if $::osfamily == 'RedHat' {
         class { 'erlang': epel_enable => true}
@@ -67,8 +68,8 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
       }
       EOS
 
-      shell('rm -f /var/lib/rabbitmq/rabbitmqadmin')
       shell('yum -y erase rabbitmq-server')
+      shell('rm -Rf /var/lib/rabbitmq/mnesia /etc/rabbitmq')
       apply_manifest(pp, :catch_failures => true)
     end
 
@@ -83,6 +84,10 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
 
     describe file('/var/lib/rabbitmq/rabbitmqadmin') do
       it { should be_file }
+    end
+
+    describe command('rabbitmqadmin --help') do
+      it { should return_exit_status 0 }
     end
 
   end
