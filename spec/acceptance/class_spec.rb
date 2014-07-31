@@ -6,18 +6,22 @@ describe 'rabbitmq class:' do
     package_name = 'rabbitmq-server'
     service_name = 'rabbitmq-server'
     package_source_281 = "http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.1/rabbitmq-server-2.8.1-1.noarch.rpm"
+    package_ensure_281 = '2.8.1-1.noarch'
   when 'SUSE'
     package_name       = 'rabbitmq-server'
     service_name       = 'rabbitmq-server'
     package_source_281 = "http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.1/rabbitmq-server-2.8.1-1.noarch.rpm"
+    package_ensure_281 = '2.8.1-1.noarch'
   when 'Debian'
     package_name       = 'rabbitmq-server'
     service_name       = 'rabbitmq-server'
     package_source_281 = ''
+    package_ensure_281 = '2.8.1'
   when 'Archlinux'
     package_name       = 'rabbitmq'
     service_name       = 'rabbitmq'
     package_source_281 = ''
+    package_ensure_281 = '2.8.1'
   end
 
   context "default class inclusion" do
@@ -104,7 +108,7 @@ describe 'rabbitmq class:' do
       class { 'rabbitmq':
         version          => '2.8.1-1',
         package_source   => '#{package_source_281}',
-        package_ensure   => '2.8.1-1.el6.noarch',
+        package_ensure   => '#{package_ensure_281}',
         package_provider => 'rpm',
       }
       if $::osfamily == 'RedHat' {

@@ -58,7 +58,7 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
         service_manage   => true,
         version          => '2.8.1-1',
         package_source   => '#{package_source}',
-        package_ensure   => '2.8.1-1.el6.noarch',
+        package_ensure   => '2.8.1-1.noarch',
         package_provider => 'rpm',
       }
       if $::osfamily == 'RedHat' {
@@ -73,7 +73,7 @@ describe 'rabbitmq::install::rabbitmqadmin class' do
     end
 
     # since serverspec (used by beaker-rspec) can only tell present/absent for packages
-    describe command('rpm -q rabbitmq-server-2.8.1-1.el6.noarch') do
+    describe command('rpm -q rabbitmq-server-2.8.1-1.noarch') do
       it { should return_exit_status 0 }
     end
 
