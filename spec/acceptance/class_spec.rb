@@ -6,14 +6,14 @@ describe 'rabbitmq class:' do
     package_name = 'rabbitmq-server'
     service_name = 'rabbitmq-server'
   when 'SUSE'
-    package_name       = 'rabbitmq-server'
-    service_name       = 'rabbitmq-server'
+    package_name = 'rabbitmq-server'
+    service_name = 'rabbitmq-server'
   when 'Debian'
-    package_name       = 'rabbitmq-server'
-    service_name       = 'rabbitmq-server'
+    package_name = 'rabbitmq-server'
+    service_name = 'rabbitmq-server'
   when 'Archlinux'
-    package_name       = 'rabbitmq'
-    service_name       = 'rabbitmq'
+    package_name = 'rabbitmq'
+    service_name = 'rabbitmq'
   end
 
   context "default class inclusion" do
@@ -83,6 +83,7 @@ describe 'rabbitmq class:' do
       }
       EOS
 
+      
       apply_manifest(pp_pre, :catch_failures => true)
       apply_manifest(pp, :catch_failures => true)
     end

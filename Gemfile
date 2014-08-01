@@ -9,7 +9,6 @@ group :development, :test do
   gem 'beaker',                  :require => false
   gem 'beaker-rspec',            :require => false
   gem 'pry',                     :require => false
-  gem 'vagrant-wrapper',         :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
